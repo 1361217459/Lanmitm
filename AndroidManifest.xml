@@ -62,7 +62,6 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
         <uses-library android:name="android.test.runner" />
     </application>
 

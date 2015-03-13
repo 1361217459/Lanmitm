@@ -1,13 +1,5 @@
 package com.oinux.lanmitm.ui;
 
-import java.io.IOException;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
