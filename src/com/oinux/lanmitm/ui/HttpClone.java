@@ -43,7 +43,7 @@ public class HttpClone extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, R.layout.http_clone);
-		setBarTitle(Html.fromHtml("<b>克隆网站</b>"));
+		setBarTitle(Html.fromHtml("<b>" + getString(R.string.http_clone) + "</b>"));
 
 		cloneLogText = (TextView) findViewById(R.id.http_clone_log);
 		cloneUrlText = (EditText) findViewById(R.id.clone_url);
@@ -115,14 +115,15 @@ public class HttpClone extends ActionBarActivity {
 			try {
 				HttpResponse response = httpClient.execute(httpGet);
 				if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-					logHandler.obtainMessage(Log.INFO, "获取成功").sendToTarget();
+					logHandler.obtainMessage(Log.INFO,
+							getString(R.string.obtain_success))
+							.sendToTarget();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
-				logHandler.obtainMessage(Log.ERROR, e.getMessage())
-						.sendToTarget();
+				logHandler.obtainMessage(Log.ERROR, e.getMessage()).sendToTarget();
 			}
 			httpClient.getConnectionManager().shutdown();
 		}

@@ -30,12 +30,11 @@ public class KillActivity extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState,
-				com.oinux.lanmitm.R.layout.kill_activity);
+		super.onCreate(savedInstanceState, com.oinux.lanmitm.R.layout.kill_activity);
 
-		setBarTitle(Html.fromHtml("<b>禁止上网</b> - <small>"
-				+ AppContext.getTarget().getIp() + "</small>"));
-
+		setBarTitle(Html.fromHtml("<b>" + getString(R.string.prohibit_internet)
+				+ "</b> - <small>" + AppContext.getTarget().getIp() + "</small>"));
+ 
 		headerView = findViewById(R.id.header_view);
 
 		killCheckBox = (CheckBox) findViewById(R.id.kill_check_box);
@@ -44,35 +43,34 @@ public class KillActivity extends ActionBarActivity {
 		} else {
 			killCheckBox.setChecked(false);
 		}
-		killCheckBox
-				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		killCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView,
-							boolean isChecked) {
-						Intent intent = new Intent(KillActivity.this,
-								KillService.class);
-						if (isChecked) {
-							if (AppContext.isHijackRunning)
-								stopService(new Intent(KillActivity.this, HijackService.class));
-							if (AppContext.isInjectRunning)
-								stopService(new Intent(KillActivity.this, InjectService.class));
-							if (AppContext.isTcpdumpRunning)
-								stopService(new Intent(KillActivity.this, SnifferService.class));
-							headerView.setVisibility(View.VISIBLE);
-							startService(intent);
-						} else {
-							headerView.setVisibility(View.GONE);
-							stopService(intent);
-						}
-					}
-				});
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				Intent intent = new Intent(KillActivity.this, KillService.class);
+				if (isChecked) {
+					if (AppContext.isHijackRunning)
+						stopService(new Intent(KillActivity.this,
+								HijackService.class));
+					if (AppContext.isInjectRunning)
+						stopService(new Intent(KillActivity.this,
+								InjectService.class));
+					if (AppContext.isTcpdumpRunning)
+						stopService(new Intent(KillActivity.this,
+								SnifferService.class));
+					headerView.setVisibility(View.VISIBLE);
+					startService(intent);
+				} else {
+					headerView.setVisibility(View.GONE);
+					stopService(intent);
+				}
+			}
+		});
 	}
 
 	@Override
 	public void onBackPressed() {
 		finish();
-		overridePendingTransition(R.anim.z_slide_in_top,
-				R.anim.z_slide_out_bottom);
+		overridePendingTransition(R.anim.z_slide_in_top, R.anim.z_slide_out_bottom);
 	}
 }

@@ -44,8 +44,8 @@ public class HijackHistory extends ActionBarActivity implements OnClickListener 
 
 	private static final String TAG = "HijackActivity";
 
-	private SimpleDateFormat parseDateFormat = new SimpleDateFormat(
-			"yyyyMMddHHmmss", Locale.getDefault());
+	private SimpleDateFormat parseDateFormat = new SimpleDateFormat("yyyyMMddHHmmss",
+			Locale.getDefault());
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm",
 			Locale.getDefault());
 
@@ -56,10 +56,9 @@ public class HijackHistory extends ActionBarActivity implements OnClickListener 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState,
-				com.oinux.lanmitm.R.layout.hijack_history);
+		super.onCreate(savedInstanceState, com.oinux.lanmitm.R.layout.hijack_history);
 
-		setBarTitle(Html.fromHtml("<b>劫持历史</b>"));
+		setBarTitle(Html.fromHtml("<b>" + getString(R.string.hijack_history) + "</b>"));
 
 		hijackList = new ArrayList<Session>();
 
@@ -74,8 +73,7 @@ public class HijackHistory extends ActionBarActivity implements OnClickListener 
 				AppContext.setCurrentHijack(hijackList.get(position));
 				Intent intent = new Intent(HijackHistory.this,
 						BrowserActivity.class);
-				intent.putExtra("view_type",
-						BrowserActivity.BROWSER_HISTORY_HIJACK);
+				intent.putExtra("view_type", BrowserActivity.BROWSER_HISTORY_HIJACK);
 				startActivity(intent);
 			}
 		});
@@ -109,8 +107,7 @@ public class HijackHistory extends ActionBarActivity implements OnClickListener 
 			if (row == null) {
 				LayoutInflater inflater = (LayoutInflater) HijackHistory.this
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				row = inflater
-						.inflate(R.layout.hijack_list_item, parent, false);
+				row = inflater.inflate(R.layout.hijack_list_item, parent, false);
 				holder = new SessionHolder();
 				holder.favicon = (ImageView) (row != null ? row
 						.findViewById(R.id.server_icon) : null);
@@ -133,8 +130,7 @@ public class HijackHistory extends ActionBarActivity implements OnClickListener 
 				holder.domainText.setText(tmp);
 
 			if (holder.dateText != null) {
-				holder.dateText
-						.setText(dateFormat.format(session.getDateTime()));
+				holder.dateText.setText(dateFormat.format(session.getDateTime()));
 				holder.dateText.setVisibility(View.VISIBLE);
 			}
 
@@ -202,8 +198,7 @@ public class HijackHistory extends ActionBarActivity implements OnClickListener 
 			session.setDomain(jsonObject.optString("domain"));
 			session.setPath(jsonObject.optString("path"));
 			session.setUserAgent(jsonObject.optString("userAgent"));
-			session.setDateTime(parseDateFormat.parse(jsonObject
-					.optString("dateTime")));
+			session.setDateTime(parseDateFormat.parse(jsonObject.optString("dateTime")));
 			Map<String, BasicClientCookie> cookies = new HashMap<String, BasicClientCookie>();
 			JSONObject cookiesObject = jsonObject.optJSONObject("cookies");
 			JSONArray cookieArray = cookiesObject.names();
@@ -230,8 +225,7 @@ public class HijackHistory extends ActionBarActivity implements OnClickListener 
 	@Override
 	public void onBackPressed() {
 		finish();
-		overridePendingTransition(R.anim.z_slide_in_top,
-				R.anim.z_slide_out_bottom);
+		overridePendingTransition(R.anim.z_slide_in_top, R.anim.z_slide_out_bottom);
 	}
 
 	@Override

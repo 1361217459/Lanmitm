@@ -92,7 +92,9 @@ public class HostsActivity extends ActionBarActivity {
 				if (msg.what == DATASET_CHANGED) {
 					activity.mHosts.add((LanHost) msg.obj);
 					activity.hostAdapter.notifyDataSetChanged();
-					activity.headerText.setText("发现局域网中的 " + activity.mHosts.size() + " 台主机");
+					activity.headerText.setText(String.format(activity
+							.getString(R.string.found_lan_hosts),
+							activity.mHosts.size()));
 				} else if (msg.what == DATASET_HOST_ALIAS_CHANGED) {
 					int i = msg.arg1;
 					LanHost host = activity.mHosts.get(i);
@@ -107,7 +109,7 @@ public class HostsActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, R.layout.hosts_activity);
 
-		setBarTitle(Html.fromHtml("<b>主机列表</b>"));
+		setBarTitle(Html.fromHtml("<b>" + getString(R.string.host_list) + "</b>"));
 		headerText = (TextView) findViewById(R.id.header_text);
 		actionProgress = (ProgressBar) findViewById(R.id.header_progress);
 		actionProgress.setVisibility(View.VISIBLE);

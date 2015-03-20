@@ -52,11 +52,10 @@ public class BrowserActivity extends Activity implements OnClickListener {
 	public static final int BROWSER_HISTORY_HIJACK = 2;
 	public static final int BROWSER_COMMON = 3;
 
-	public static final String COOKIES_PATH = AppContext.getStoragePath()
-			+ "/lanmitm/cookies";
+	public static final String COOKIES_PATH = AppContext.getStoragePath() + "/lanmitm/cookies";
 
-	private SimpleDateFormat dateFormat = new SimpleDateFormat(
-			"yyyyMMddHHmmss", Locale.getDefault());
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss",
+			Locale.getDefault());
 	private WebSettings mSettings = null;
 	private WebView mWebView = null;
 	private ProgressBar progressBar;
@@ -88,8 +87,7 @@ public class BrowserActivity extends Activity implements OnClickListener {
 		urlEditText.setOnEditorActionListener(new OnEditorActionListener() {
 
 			@Override
-			public boolean onEditorAction(TextView v, int actionId,
-					KeyEvent event) {
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_DONE
 						|| actionId == EditorInfo.IME_ACTION_GO
 						|| actionId == EditorInfo.IME_ACTION_NEXT) {
@@ -223,8 +221,7 @@ public class BrowserActivity extends Activity implements OnClickListener {
 			sb.append("\"cookies\":{");
 			Set<Entry<String, BasicClientCookie>> entrySet = cookies.entrySet();
 			if (entrySet.size() > 0) {
-				Iterator<Entry<String, BasicClientCookie>> it = entrySet
-						.iterator();
+				Iterator<Entry<String, BasicClientCookie>> it = entrySet.iterator();
 				while (it.hasNext()) {
 					Entry<String, BasicClientCookie> cookie = it.next();
 					sb.append("\"");
@@ -247,9 +244,8 @@ public class BrowserActivity extends Activity implements OnClickListener {
 		sb.append("\"}");
 		FileOutputStream outputStream = null;
 		File storageFile = new File(COOKIES_PATH);
-		String fileName = storageFile.getAbsolutePath() + "/"
-				+ session.getDomain() + "_" + dateFormat.format(dateTime)
-				+ ".lanmitm";
+		String fileName = storageFile.getAbsolutePath() + "/" + session.getDomain() + "_"
+				+ dateFormat.format(dateTime) + ".lanmitm";
 		try {
 			if (!storageFile.exists())
 				storageFile.mkdirs();
@@ -268,6 +264,7 @@ public class BrowserActivity extends Activity implements OnClickListener {
 					e.printStackTrace();
 				}
 		}
-		Toast.makeText(this, "已保存至" + fileName, Toast.LENGTH_LONG).show();
+		Toast.makeText(this, getString(R.string.saved_in, fileName), Toast.LENGTH_LONG)
+				.show();
 	}
 }

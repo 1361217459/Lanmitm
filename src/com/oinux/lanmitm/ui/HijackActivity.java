@@ -37,11 +37,10 @@ public class HijackActivity extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState,
-				com.oinux.lanmitm.R.layout.hijack_activity);
+		super.onCreate(savedInstanceState, com.oinux.lanmitm.R.layout.hijack_activity);
 
-		setBarTitle(Html.fromHtml("<b>会话劫持</b> - <small>"
-				+ AppContext.getTarget().getIp() + "</small>"));
+		setBarTitle(Html.fromHtml("<b>" + getString(R.string.session_hijack)
+				+ "</b> - <small>" + AppContext.getTarget().getIp() + "</small>"));
 
 		hijackCheckBox = (CheckBox) findViewById(R.id.hijack_check_box);
 		if (AppContext.isHijackRunning) {
@@ -49,21 +48,18 @@ public class HijackActivity extends ActionBarActivity {
 		} else {
 			hijackCheckBox.setChecked(false);
 		}
-		hijackCheckBox
-				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		hijackCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView,
-							boolean isChecked) {
-						Intent intent = new Intent(HijackActivity.this,
-								HijackService.class);
-						if (isChecked) {
-							startService(intent);
-						} else {
-							stopService(intent);
-						}
-					}
-				});
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				Intent intent = new Intent(HijackActivity.this, HijackService.class);
+				if (isChecked) {
+					startService(intent);
+				} else {
+					stopService(intent);
+				}
+			}
+		});
 
 		updateReceiver = new UpdateReceiver();
 		IntentFilter filter = new IntentFilter();
@@ -82,12 +78,11 @@ public class HijackActivity extends ActionBarActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					final int position, long id) {
-				AppContext.setCurrentHijack(AppContext.getHijackList().get(
-						position));
+				AppContext.setCurrentHijack(AppContext.getHijackList()
+						.get(position));
 				Intent intent = new Intent(HijackActivity.this,
 						BrowserActivity.class);
-				intent.putExtra("view_type",
-						BrowserActivity.BROWSER_CURRENT_HIJACK);
+				intent.putExtra("view_type", BrowserActivity.BROWSER_CURRENT_HIJACK);
 				startActivity(intent);
 			}
 		});
@@ -127,8 +122,7 @@ public class HijackActivity extends ActionBarActivity {
 			if (row == null) {
 				LayoutInflater inflater = (LayoutInflater) HijackActivity.this
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				row = inflater
-						.inflate(R.layout.hijack_list_item, parent, false);
+				row = inflater.inflate(R.layout.hijack_list_item, parent, false);
 				holder = new SessionHolder();
 				holder.favicon = (ImageView) (row != null ? row
 						.findViewById(R.id.server_icon) : null);
@@ -176,7 +170,6 @@ public class HijackActivity extends ActionBarActivity {
 			AppContext.setHijackList(new ArrayList<Session>());
 		}
 		finish();
-		overridePendingTransition(R.anim.z_slide_in_top,
-				R.anim.z_slide_out_bottom);
+		overridePendingTransition(R.anim.z_slide_in_top, R.anim.z_slide_out_bottom);
 	}
 }

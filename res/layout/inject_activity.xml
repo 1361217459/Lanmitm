@@ -25,6 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+             android:layout_marginRight="80dp"
             android:layout_toRightOf="@id/actionbar_logo"
             android:text="@string/app_name"
             android:textColor="#ffffffff"
@@ -66,6 +67,7 @@
             android:padding="9.0dip"
             android:paddingBottom="8.0dip"
             android:paddingLeft="8.0dip"
+            android:paddingRight="0dp"
             android:text="正在执行代码注入"
             android:textColor="#ffffff"
             android:textSize="15.0sp" />
@@ -93,7 +95,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
-                android:text="需要注入的网页的url的正则表达式"
+                android:text="@string/inject_address_tips"
                 android:textColor="#FFFFCC"
                 android:textSize="15sp" />
 
@@ -116,7 +118,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="18dp"
-                android:text="需要注入的代码"
+                android:text="@string/inject_code_tips"
                 android:textColor="#FFFFCC"
                 android:textSize="15sp" />
 
@@ -142,7 +144,7 @@
                 android:background="@drawable/button"
                 android:gravity="center"
                 android:padding="14.0dip"
-                android:text="保存"
+                android:text="@string/save"
                 android:textColor="#ffffffff"
                 android:textSize="20sp"
                 android:textStyle="bold" />

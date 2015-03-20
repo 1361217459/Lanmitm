@@ -40,7 +40,8 @@ public class HttpActivity extends ActionBarActivity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, R.layout.http_server);
-		setBarTitle(Html.fromHtml("<b>HttpServer配置</b>"));
+		setBarTitle(Html.fromHtml("<b>" + getString(R.string.http_server_configuration)
+				+ "</b>"));
 
 		cloneBtn = (Button) findViewById(R.id.httpserver_clone_btn);
 		cloneBtn.setOnClickListener(this);
@@ -52,9 +53,8 @@ public class HttpActivity extends ActionBarActivity implements OnClickListener {
 		url = "http://" + AppContext.getIp() + ":" + HttpService.PORT;
 
 		if (!AppContext.isHttpserverRunning)
-			serverLogText.setText(Html.fromHtml("<br/>这里是日志窗口：<br/><br/>"
-					+ "—http文档目录:存储卡/lanmitm/www<br/>" + "—开启后请在浏览器中输入<br/>"
-					+ "—" + url + " 访问页面<br/><br/>"));
+			serverLogText.setText(Html.fromHtml(String.format(
+					getString(R.string.http_server_log_tips), url))); 
 		else
 			serverLogText.setText(AppContext.getServerLog().toString());
 
@@ -69,35 +69,31 @@ public class HttpActivity extends ActionBarActivity implements OnClickListener {
 		} else {
 			httpServerCheckBox.setChecked(false);
 		}
-		httpServerCheckBox
-				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		httpServerCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView,
-							boolean isChecked) {
-						if (isChecked) {
-							startService(new Intent(HttpActivity.this,
-									HttpService.class));
-							headView.setVisibility(View.VISIBLE);
-							Animation animation = new AlphaAnimation(0.0f, 1.0f);
-							animation.setDuration(500);
-							headView.startAnimation(animation);
-						} else {
-							stopService(new Intent(HttpActivity.this,
-									HttpService.class));
-							Animation animation = new AlphaAnimation(1.0f, 0.0f);
-							animation.setDuration(500);
-							headView.startAnimation(animation);
-							headView.setVisibility(View.GONE);
-						}
-					}
-				});
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (isChecked) {
+					startService(new Intent(HttpActivity.this,
+							HttpService.class));
+					headView.setVisibility(View.VISIBLE);
+					Animation animation = new AlphaAnimation(0.0f, 1.0f);
+					animation.setDuration(500);
+					headView.startAnimation(animation);
+				} else {
+					stopService(new Intent(HttpActivity.this, HttpService.class));
+					Animation animation = new AlphaAnimation(1.0f, 0.0f);
+					animation.setDuration(500);
+					headView.startAnimation(animation);
+					headView.setVisibility(View.GONE);
+				}
+			}
+		});
 
 		handler = new Handler();
 
 		logReceiver = new LogReceiver();
-		IntentFilter filter = new IntentFilter(
-				HttpService.SERVER_LOG_CHANGE_INTENT);
+		IntentFilter filter = new IntentFilter(HttpService.SERVER_LOG_CHANGE_INTENT);
 		registerReceiver(logReceiver, filter);
 	}
 

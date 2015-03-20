@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:paddingTop="4.0dip"
-            android:text="数据嗅探"
+            android:text="@string/sniffer"
             android:textColor="#ffffffcc"
             android:textSize="20sp" />
 
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/mitm_select_sniffer_head"
             android:gravity="bottom|left|center"
-            android:text="抓取并转发局域网某台设备与其他主机的通信数据"
+            android:text="@string/sniffer_tips"
             android:textColor="#ffffffff"
             android:textSize="14.0dip" />
     </RelativeLayout>
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:paddingTop="4.0dip"
-            android:text="会话劫持"
+            android:text="@string/session_hijack"
             android:textColor="#ffffffcc"
             android:textSize="20sp" />
 
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/mitm_select_hijack_head"
             android:gravity="bottom|left|center"
-            android:text="劫持局域网中某台设备的http会话"
+            android:text="@string/session_hijack_tips"
             android:textColor="#ffffffff"
             android:textSize="14.0dip" />
     </RelativeLayout>
@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:paddingTop="4.0dip"
-            android:text="代码注入"
+            android:text="@string/code_inject"
             android:textColor="#ffffffcc"
             android:textSize="20sp" />
 
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/mitm_select_inject_head"
             android:gravity="bottom|left|center"
-            android:text="对其他主机返回的http网页数据进行篡改，注入"
+            android:text="@string/code_inject_tips"
             android:textColor="#ffffffff"
             android:textSize="14.0dip" />
     </RelativeLayout>
@@ -123,7 +123,7 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:paddingTop="4.0dip"
-            android:text="禁止上网"
+            android:text="@string/prohibit_internet"
             android:textColor="#ffffffcc"
             android:textSize="20sp" />
 
@@ -132,7 +132,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/mitm_select_kill_head"
             android:gravity="bottom|left|center"
-            android:text="使目标主机无法上网，开启该功能后其他功能将停止"
+            android:text="@string/prohibit_internet_tips"
             android:textColor="#ffffffff"
             android:textSize="14.0dip" />
     </RelativeLayout>

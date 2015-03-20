@@ -35,10 +35,10 @@
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:paddingBottom="5dp"
             android:paddingLeft="15dp"
             android:paddingRight="8dp"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp"
             android:src="@drawable/about_sel" />
     </RelativeLayout>
 
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:paddingTop="4.0dip"
-            android:text="启用防护"
+            android:text="@string/enable_protection"
             android:textColor="#ffff5926"
             android:textSize="20sp" />
 
@@ -64,8 +64,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/main_open_protect_head"
+            android:layout_marginRight="80dp"
             android:gravity="bottom|left|center"
-            android:text="防御arp、dns欺骗等攻击"
+            android:text="@string/protection_tips"
             android:textColor="#ffffffff"
             android:textSize="14.0dip" />
 
@@ -109,7 +110,7 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:paddingTop="4.0dip"
-            android:text="ARP欺骗方式"
+            android:text="@string/arp_deception"
             android:textColor="#ffff5926"
             android:textSize="20sp" />
 
@@ -117,8 +118,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/main_arp_way_head"
+            android:layout_marginRight="50dp"
             android:gravity="bottom|left|center"
-            android:text="路由、主机单向欺骗或者双向欺骗"
+            android:text="@string/arp_deception_tips"
             android:textColor="#ffffffff"
             android:textSize="14.0dip" />
 
@@ -168,8 +170,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/main_http_server_head"
+            android:layout_marginRight="50dp"
             android:gravity="bottom|left|center"
-            android:text="自定义httpserver，提供简单web服务"
+            android:text="@string/http_server_tips"
             android:textColor="#ffffffff"
             android:textSize="14.0dip" />
 
@@ -212,7 +215,7 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:paddingTop="4.0dip"
-            android:text="劫持历史"
+            android:text="@string/hijack_history"
             android:textColor="#ffff5926"
             android:textSize="20sp" />
 
@@ -220,8 +223,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/main_hijack_history_head"
+            android:layout_marginRight="50dp"
             android:gravity="bottom|left|center"
-            android:text="查看保存在本地的会话劫持"
+            android:text="@string/hijact_history_tips"
             android:textColor="#ffffffff"
             android:textSize="14.0dip" />
     </RelativeLayout>
@@ -239,7 +243,7 @@
             android:background="@drawable/button"
             android:gravity="center"
             android:padding="14.0dip"
-            android:text="扫描主机"
+            android:text="@string/scan"
             android:textColor="#ffffffff"
             android:textSize="20sp"
             android:textStyle="bold" />

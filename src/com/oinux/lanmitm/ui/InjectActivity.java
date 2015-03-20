@@ -25,8 +25,7 @@ import com.oinux.lanmitm.service.InjectService;
  * @author oinux
  *
  */
-public class InjectActivity extends ActionBarActivity implements
-		OnClickListener {
+public class InjectActivity extends ActionBarActivity implements OnClickListener {
 
 	private static final String TAG = "InjectActivity";
 
@@ -37,11 +36,10 @@ public class InjectActivity extends ActionBarActivity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState,
-				com.oinux.lanmitm.R.layout.inject_activity);
+		super.onCreate(savedInstanceState, com.oinux.lanmitm.R.layout.inject_activity);
 
-		setBarTitle(Html.fromHtml("<b>代码注入</b> - <small>"
-				+ AppContext.getTarget().getIp() + "</small>"));
+		setBarTitle(Html.fromHtml("<b>" + getString(R.string.code_inject)
+				+ "</b> - <small>" + AppContext.getTarget().getIp() + "</small>"));
 
 		headerView = findViewById(R.id.header_view);
 
@@ -51,39 +49,34 @@ public class InjectActivity extends ActionBarActivity implements
 		} else {
 			injectCheckBox.setChecked(false);
 		}
-		injectCheckBox
-				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		injectCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView,
-							boolean isChecked) {
-						Intent intent = new Intent(InjectActivity.this,
-								InjectService.class);
-						if (isChecked) {
-							headerView.setVisibility(View.VISIBLE);
-							startService(intent);
-						} else {
-							headerView.setVisibility(View.GONE);
-							stopService(intent);
-						}
-					}
-				});
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				Intent intent = new Intent(InjectActivity.this, InjectService.class);
+				if (isChecked) {
+					headerView.setVisibility(View.VISIBLE);
+					startService(intent);
+				} else {
+					headerView.setVisibility(View.GONE);
+					stopService(intent);
+				}
+			}
+		});
 
 		findViewById(R.id.inject_save_btn).setOnClickListener(this);
 
 		urlPatternText = (EditText) findViewById(R.id.inject_pattern);
 		injectCodeText = (EditText) findViewById(R.id.inject_code);
 
-		urlPatternText.setText(HttpProxy.getInstance().getInjectPattern()
-				.pattern());
+		urlPatternText.setText(HttpProxy.getInstance().getInjectPattern().pattern());
 		injectCodeText.setText(HttpProxy.getInstance().getInject());
 	}
 
 	@Override
 	public void onBackPressed() {
 		finish();
-		overridePendingTransition(R.anim.z_slide_in_top,
-				R.anim.z_slide_out_bottom);
+		overridePendingTransition(R.anim.z_slide_in_top, R.anim.z_slide_out_bottom);
 	}
 
 	@Override
@@ -98,11 +91,12 @@ public class InjectActivity extends ActionBarActivity implements
 					HttpProxy.getInstance().setInjectPattern(
 							Pattern.compile(pattern));
 				} catch (PatternSyntaxException e) {
-					Toast.makeText(this, "正则表达式不符合规则", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(this,
+							getString(R.string.regular_expression_invalid),
+							Toast.LENGTH_SHORT).show();
 				}
 			}
-			Toast.makeText(this, "已保存", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show();
 			break;
 
 		default:

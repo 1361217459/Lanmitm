@@ -18,11 +18,10 @@ public class MitmSelect extends ActionBarActivity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState,
-				com.oinux.lanmitm.R.layout.mitm_select);
+		super.onCreate(savedInstanceState, com.oinux.lanmitm.R.layout.mitm_select);
 
-		setBarTitle(Html.fromHtml("<b>功能选择</b> - <small>"
-				+ AppContext.getTarget().getIp() + "</small>"));
+		setBarTitle(Html.fromHtml("<b>" + getString(R.string.function_select)
+				+ "</b> - <small>" + AppContext.getTarget().getIp() + "</small>"));
 
 		findViewById(R.id.mitm_select_sniffer).setOnClickListener(this);
 		findViewById(R.id.mitm_select_hijack).setOnClickListener(this);

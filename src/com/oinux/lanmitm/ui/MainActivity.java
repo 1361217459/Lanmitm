@@ -40,10 +40,9 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 	private CheckBox protectBox;
 	private Button lanScanBtn;
-	private String protect_cmds = String.format("arp -s %s %s",
-			AppContext.getGateway(), AppContext.getGatewayMac());
-	private String close_protect_cmds = String.format("arp -d %s",
-			AppContext.getGateway());
+	private String protect_cmds = String.format("arp -s %s %s", AppContext.getGateway(),
+			AppContext.getGatewayMac());
+	private String close_protect_cmds = String.format("arp -d %s", AppContext.getGateway());
 	private boolean isProtected;
 	private boolean isExit = false;
 	private int arp_cheat_way;
@@ -56,8 +55,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, R.layout.main_activity);
 
-		setBarTitle(Html
-				.fromHtml("<b>" + getString(R.string.app_name) + "</b>"));
+		setBarTitle(Html.fromHtml("<b>" + getString(R.string.app_name) + "</b>"));
 
 		lanScanBtn = (Button) findViewById(R.id.main_lan_scan_btn);
 		lanScanBtn.setOnClickListener(this);
@@ -79,15 +77,14 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		isProtected = AppContext.getBoolean("is_protected", false);
 		protectBox.setChecked(isProtected);
 		if (isProtected) {
-			ShellUtils.execCommand(new String[] { close_protect_cmds,
-					protect_cmds }, true, true);
+			ShellUtils.execCommand(new String[] { close_protect_cmds, protect_cmds },
+					true, true);
 		}
 
 		protectBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				AppContext.putBoolean("is_protected", isChecked);
 				if (isChecked) {
 					ShellUtils.execCommand(new String[] { close_protect_cmds,
@@ -100,16 +97,17 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 		if (!ShellUtils.checkRootPermission()) {
 			YesOrNoDialog.Builder builder = new YesOrNoDialog.Builder(this);
-			builder.setTitle("系统提示")
-					.setMessage("本应用只能在已root的Android手机上运行，下载root工具？")
-					.setNegativeButton("下载",
+			builder.setTitle(getString(R.string.system_alter))
+					.setMessage(R.string.check_root_tips)
+					.setNegativeButton(R.string.download,
 							new DialogInterface.OnClickListener() {
 
 								@Override
-								public void onClick(DialogInterface dialog,
+								public void onClick(
+										DialogInterface dialog,
 										int which) {
 									dialog.dismiss();
-									if (checkAssistant("root工具")) {
+									if (checkAssistant(getString(R.string.root_tool))) {
 										Intent intent = new Intent(
 												Intent.ACTION_VIEW);
 										ComponentName cn = new ComponentName(
@@ -122,11 +120,12 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 									}
 								}
 							})
-					.setPositiveButton("退出",
+					.setPositiveButton(R.string.exit,
 							new DialogInterface.OnClickListener() {
 
 								@Override
-								public void onClick(DialogInterface dialog,
+								public void onClick(
+										DialogInterface dialog,
 										int which) {
 									dialog.dismiss();
 									exit();
@@ -134,17 +133,19 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 							}).create().show();
 		} else {
 
-			CommandResult cr = ShellUtils.execCommand("which killall", true,
-					true, true);
+			CommandResult cr = ShellUtils
+					.execCommand("which killall", true, true, true);
 			if (cr.result != 0) {
 				YesOrNoDialog.Builder builder = new YesOrNoDialog.Builder(this);
-				builder.setTitle("系统提示")
-						.setMessage("本程序需要安装busybox才能正确运行，下载busybox？")
-						.setNegativeButton("下载",
+				builder.setTitle(getString(R.string.system_alter))
+						.setMessage(R.string.check_busybox_tip)
+						.setNegativeButton(
+								R.string.download,
 								new DialogInterface.OnClickListener() {
 
 									@Override
-									public void onClick(DialogInterface dialog,
+									public void onClick(
+											DialogInterface dialog,
 											int which) {
 										dialog.dismiss();
 										if (checkAssistant("busybox")) {
@@ -160,11 +161,13 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 										}
 									}
 								})
-						.setPositiveButton("退出",
+						.setPositiveButton(
+								R.string.exit,
 								new DialogInterface.OnClickListener() {
 
 									@Override
-									public void onClick(DialogInterface dialog,
+									public void onClick(
+											DialogInterface dialog,
 											int which) {
 										dialog.dismiss();
 										exit();
@@ -181,13 +184,16 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 			return true;
 		} catch (NameNotFoundException e) {
 			YesOrNoDialog.Builder builder = new YesOrNoDialog.Builder(this);
-			builder.setTitle("系统提示")
-					.setMessage("本程序运行需要安装" + name + "，是否通过360手机助手安装它？")
-					.setNegativeButton("是",
+			builder.setTitle(getString(R.string.system_alter))
+					.setMessage(String.format(
+							getString(R.string.check_360_assistant),
+							name))
+					.setNegativeButton(R.string.yes,
 							new DialogInterface.OnClickListener() {
 
 								@Override
-								public void onClick(DialogInterface dialog,
+								public void onClick(
+										DialogInterface dialog,
 										int which) {
 									dialog.dismiss();
 									Intent intent = new Intent();
@@ -198,11 +204,12 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 									startActivity(intent);
 								}
 							})
-					.setPositiveButton("否",
+					.setPositiveButton(R.string.no,
 							new DialogInterface.OnClickListener() {
 
 								@Override
-								public void onClick(DialogInterface dialog,
+								public void onClick(
+										DialogInterface dialog,
 										int which) {
 									dialog.dismiss();
 									exit();
@@ -217,37 +224,38 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.main_http_server_btn:
 			startActivity(new Intent(this, HttpActivity.class));
-			overridePendingTransition(android.R.anim.fade_in,
-					android.R.anim.fade_out);
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 			break;
 		case R.id.main_lan_scan_btn:
 			if (!NetworkUtils.isWifiConnected()) {
 				YesOrNoDialog.Builder builder = new YesOrNoDialog.Builder(this);
-				builder.setTitle("系统提示")
-						.setMessage("网络未连接，是否打开设置WiFi？")
-						.setNegativeButton("返回",
+				builder.setTitle(getString(R.string.system_alter))
+						.setMessage(R.string.wifi_connect_tip)
+						.setNegativeButton(
+								R.string.return_tip,
 								new DialogInterface.OnClickListener() {
 
 									@Override
-									public void onClick(DialogInterface dialog,
+									public void onClick(
+											DialogInterface dialog,
 											int which) {
 										dialog.dismiss();
 									}
 								})
-						.setPositiveButton("设置",
+						.setPositiveButton(
+								R.string.setting,
 								new DialogInterface.OnClickListener() {
 
 									@Override
-									public void onClick(DialogInterface dialog,
+									public void onClick(
+											DialogInterface dialog,
 											int which) {
 										dialog.dismiss();
 										Intent intent = new Intent();
 										intent.setAction("android.net.wifi.PICK_WIFI_NETWORK");
-										intent.putExtra(
-												"extra_prefs_show_button_bar",
+										intent.putExtra("extra_prefs_show_button_bar",
 												true);
-										intent.putExtra(
-												"wifi_enable_next_on_connect",
+										intent.putExtra("wifi_enable_next_on_connect",
 												true);
 										startActivity(intent);
 									}
@@ -259,40 +267,46 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 			}
 			break;
 		case R.id.main_arp_cheat_way_btn:
-			RadioDialog.Builder builder = new RadioDialog.Builder(
-					MainActivity.this);
-			builder.setTitle("选择方式")
-					.setRadio1("主机单向",
+			RadioDialog.Builder builder = new RadioDialog.Builder(MainActivity.this);
+			builder.setTitle(R.string.choose_way)
+					.setRadio1(R.string.one_way_host,
 							ArpService.ONE_WAY_HOST == arp_cheat_way,
 							new DialogInterface.OnClickListener() {
 								@Override
-								public void onClick(DialogInterface dialog,
+								public void onClick(
+										DialogInterface dialog,
 										int which) {
 									arp_cheat_way = ArpService.ONE_WAY_HOST;
-									AppContext.putInt("arp_cheat_way",
+									AppContext.putInt(
+											"arp_cheat_way",
 											arp_cheat_way);
 									dialog.dismiss();
 								}
 							})
-					.setRadio2("路由单向",
+					.setRadio2(R.string.one_way_router,
 							ArpService.ONE_WAY_ROUTE == arp_cheat_way,
 							new DialogInterface.OnClickListener() {
 								@Override
-								public void onClick(DialogInterface dialog,
+								public void onClick(
+										DialogInterface dialog,
 										int which) {
 									arp_cheat_way = ArpService.ONE_WAY_ROUTE;
-									AppContext.putInt("arp_cheat_way",
+									AppContext.putInt(
+											"arp_cheat_way",
 											arp_cheat_way);
 									dialog.dismiss();
 								}
 							})
-					.setRadio3("双向欺骗", ArpService.TWO_WAY == arp_cheat_way,
+					.setRadio3(R.string.two_way,
+							ArpService.TWO_WAY == arp_cheat_way,
 							new DialogInterface.OnClickListener() {
 								@Override
-								public void onClick(DialogInterface dialog,
+								public void onClick(
+										DialogInterface dialog,
 										int which) {
 									arp_cheat_way = ArpService.TWO_WAY;
-									AppContext.putInt("arp_cheat_way",
+									AppContext.putInt(
+											"arp_cheat_way",
 											arp_cheat_way);
 									dialog.dismiss();
 								}
@@ -311,12 +325,11 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK
-				&& event.getAction() == KeyEvent.ACTION_DOWN) {
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
 			Timer tExit = null;
 			if (isExit == false) {
 				isExit = true; // 准备退出
-				Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, R.string.exit_tip, Toast.LENGTH_SHORT).show();
 				tExit = new Timer();
 				tExit.schedule(new TimerTask() {
 					@Override
