@@ -1,7 +1,7 @@
 Lanmitm — Android中间人攻击测试工具
 =============
 
-#####详细介绍：<http://oinux.com>
+#####详细介绍：<http://www.oinux.com>
 
 #####下载说明：安装文件请直接进入download目录下载，开发版请自行导入eclipse中运行
 
