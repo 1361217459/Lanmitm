@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Widget.Sherlock.ProgressBar" parent="@android:style/Widget.ProgressBar">
         <item name="android:indeterminateDrawable">@drawable/abs__progress_medium_holo</item>

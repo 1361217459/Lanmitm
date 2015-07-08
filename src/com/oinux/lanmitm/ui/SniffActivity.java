@@ -19,7 +19,7 @@ import com.oinux.lanmitm.R;
 import com.oinux.lanmitm.service.SnifferService;
 
 /**
- * 
+ *
  * @author oinux
  *
  */
@@ -104,6 +104,6 @@ public class SniffActivity extends ActionBarActivity {
 	@Override
 	public void onBackPressed() {
 		finish();
-		overridePendingTransition(R.anim.z_slide_in_top, R.anim.z_slide_out_bottom);
+		overridePendingTransition(R.anim.slide_right, R.anim.slide_right_out);
 	}
 }

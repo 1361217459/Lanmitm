@@ -17,7 +17,7 @@ import com.oinux.lanmitm.service.KillService;
 import com.oinux.lanmitm.service.SnifferService;
 
 /**
- * 
+ *
  * @author oinux
  *
  */
@@ -34,7 +34,7 @@ public class KillActivity extends ActionBarActivity {
 
 		setBarTitle(Html.fromHtml("<b>" + getString(R.string.prohibit_internet)
 				+ "</b> - <small>" + AppContext.getTarget().getIp() + "</small>"));
- 
+
 		headerView = findViewById(R.id.header_view);
 
 		killCheckBox = (CheckBox) findViewById(R.id.kill_check_box);
@@ -71,6 +71,6 @@ public class KillActivity extends ActionBarActivity {
 	@Override
 	public void onBackPressed() {
 		finish();
-		overridePendingTransition(R.anim.z_slide_in_top, R.anim.z_slide_out_bottom);
+		overridePendingTransition(R.anim.slide_right, R.anim.slide_right_out);
 	}
 }

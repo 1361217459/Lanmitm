@@ -39,7 +39,7 @@ public class MitmSelect extends ActionBarActivity implements OnClickListener {
 			}
 			intent = new Intent(MitmSelect.this, SniffActivity.class);
 			startActivity(intent);
-			finish();
+			overridePendingTransition(R.anim.slide_left, R.anim.slide_left_out);
 			break;
 		case R.id.mitm_select_hijack:
 			if (AppContext.isHijackRunning) {
@@ -49,7 +49,7 @@ public class MitmSelect extends ActionBarActivity implements OnClickListener {
 			}
 			intent = new Intent(MitmSelect.this, HijackActivity.class);
 			startActivity(intent);
-			finish();
+			overridePendingTransition(R.anim.slide_left, R.anim.slide_left_out);
 			break;
 		case R.id.mitm_select_inject:
 			if (AppContext.isInjectRunning) {
@@ -57,7 +57,7 @@ public class MitmSelect extends ActionBarActivity implements OnClickListener {
 			}
 			intent = new Intent(MitmSelect.this, InjectActivity.class);
 			startActivity(intent);
-			finish();
+			overridePendingTransition(R.anim.slide_left, R.anim.slide_left_out);
 			break;
 		case R.id.mitm_select_kill:
 			if (AppContext.isKillRunning) {
@@ -65,10 +65,16 @@ public class MitmSelect extends ActionBarActivity implements OnClickListener {
 			}
 			intent = new Intent(MitmSelect.this, KillActivity.class);
 			startActivity(intent);
-			finish();
+			overridePendingTransition(R.anim.slide_left, R.anim.slide_left_out);
 		default:
 			break;
 		}
 	}
 
+
+	@Override
+	public void onBackPressed() {
+		finish();
+		overridePendingTransition(R.anim.slide_right, R.anim.slide_right_out);
+	}
 }

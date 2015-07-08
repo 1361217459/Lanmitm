@@ -41,8 +41,8 @@ import com.oinux.lanmitm.entity.LanHost;
 import com.oinux.lanmitm.util.NetworkUtils;
 
 /**
- * 
- * 
+ *
+ *
  * @author oinux
  *
  */
@@ -137,7 +137,7 @@ public class HostsActivity extends ActionBarActivity {
 				LanHost host = (LanHost) parent.getItemAtPosition(position);
 				AppContext.setTarget(host);
 				startActivity(new Intent(HostsActivity.this, MitmSelect.class));
-				overridePendingTransition(R.anim.zoom_in, android.R.anim.fade_out);
+				overridePendingTransition(R.anim.slide_left, R.anim.slide_left_out);
 			}
 		});
 
@@ -229,9 +229,9 @@ public class HostsActivity extends ActionBarActivity {
 	}
 
 	/**
-	 * 
+	 *
 	 * 多线程按照IP地址递增扫描 使用线程池 固定大小10
-	 * 
+	 *
 	 * @author oinux
 	 *
 	 */
@@ -278,9 +278,9 @@ public class HostsActivity extends ActionBarActivity {
 
 	/**
 	 * 读取arp缓存文件
-	 * 
+	 *
 	 * 每隔三秒一次
-	 * 
+	 *
 	 * @author oinux
 	 *
 	 */
@@ -374,9 +374,9 @@ public class HostsActivity extends ActionBarActivity {
 	}
 
 	/**
-	 * 
+	 *
 	 * 发送NETBIOS数据包
-	 * 
+	 *
 	 * @author oinux
 	 *
 	 */

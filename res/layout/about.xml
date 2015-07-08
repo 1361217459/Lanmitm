@@ -18,7 +18,8 @@
             android:id="@+id/about_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="left"
+            android:layout_marginLeft="12dp"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="15dp"
             android:text="@string/about_lanmitm"
@@ -97,7 +98,7 @@
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 android:paddingTop="8dp"
-                android:text="http://oinux.com"
+                android:text="http://www.oinux.com"
                 android:textColor="#ffffff"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -122,7 +123,7 @@
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:paddingTop="8dp"
-            android:text="http://oinux.com/upgrade-history"
+            android:text="http://www.oinux.com/upgrade-history"
             android:textColor="#ffffff"
             android:textSize="14sp"
             android:textStyle="bold" />

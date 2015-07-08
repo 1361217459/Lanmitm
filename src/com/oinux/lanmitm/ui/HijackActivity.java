@@ -170,6 +170,6 @@ public class HijackActivity extends ActionBarActivity {
 			AppContext.setHijackList(new ArrayList<Session>());
 		}
 		finish();
-		overridePendingTransition(R.anim.z_slide_in_top, R.anim.z_slide_out_bottom);
+		overridePendingTransition(R.anim.slide_right, R.anim.slide_right_out);
 	}
 }

@@ -21,7 +21,7 @@ import com.oinux.lanmitm.proxy.HttpProxy;
 import com.oinux.lanmitm.service.InjectService;
 
 /**
- * 
+ *
  * @author oinux
  *
  */
@@ -76,7 +76,7 @@ public class InjectActivity extends ActionBarActivity implements OnClickListener
 	@Override
 	public void onBackPressed() {
 		finish();
-		overridePendingTransition(R.anim.z_slide_in_top, R.anim.z_slide_out_bottom);
+		overridePendingTransition(R.anim.slide_right, R.anim.slide_right_out);
 	}
 
 	@Override

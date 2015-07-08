@@ -40,8 +40,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 	private CheckBox protectBox;
 	private Button lanScanBtn;
-	private String protect_cmds = String.format("arp -s %s %s", AppContext.getGateway(),
-			AppContext.getGatewayMac());
+	private String protect_cmds = String.format("arp -s %s %s", AppContext.getGateway(), AppContext.getGatewayMac());
 	private String close_protect_cmds = String.format("arp -d %s", AppContext.getGateway());
 	private boolean isProtected;
 	private boolean isExit = false;
@@ -77,8 +76,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		isProtected = AppContext.getBoolean("is_protected", false);
 		protectBox.setChecked(isProtected);
 		if (isProtected) {
-			ShellUtils.execCommand(new String[] { close_protect_cmds, protect_cmds },
-					true, true);
+			ShellUtils.execCommand(new String[] { close_protect_cmds, protect_cmds }, true, true);
 		}
 
 		protectBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -87,8 +85,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				AppContext.putBoolean("is_protected", isChecked);
 				if (isChecked) {
-					ShellUtils.execCommand(new String[] { close_protect_cmds,
-							protect_cmds }, true, true);
+					ShellUtils.execCommand(new String[] { close_protect_cmds, protect_cmds }, true, true);
 				} else {
 					ShellUtils.execCommand(close_protect_cmds, true, true);
 				}
@@ -97,125 +94,45 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 		if (!ShellUtils.checkRootPermission()) {
 			YesOrNoDialog.Builder builder = new YesOrNoDialog.Builder(this);
-			builder.setTitle(getString(R.string.system_alter))
-					.setMessage(R.string.check_root_tips)
-					.setNegativeButton(R.string.download,
-							new DialogInterface.OnClickListener() {
+			builder.setTitle(getString(R.string.system_alter)).setMessage(R.string.check_root_tips)
+					.setNegativeButton(R.string.download, new DialogInterface.OnClickListener() {
 
-								@Override
-								public void onClick(
-										DialogInterface dialog,
-										int which) {
-									dialog.dismiss();
-									if (checkAssistant(getString(R.string.root_tool))) {
-										Intent intent = new Intent(
-												Intent.ACTION_VIEW);
-										ComponentName cn = new ComponentName(
-												"com.qihoo.appstore",
-												"com.qihoo.appstore.activities.SearchDistributionActivity");
-										intent.setComponent(cn);
-										intent.setData(Uri
-												.parse("market://details?id=com.qihoo.permmgr"));
-										startActivity(intent);
-									}
-								}
-							})
-					.setPositiveButton(R.string.exit,
-							new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					}).setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
 
-								@Override
-								public void onClick(
-										DialogInterface dialog,
-										int which) {
-									dialog.dismiss();
-									exit();
-								}
-							}).create().show();
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+							exit();
+						}
+					}).create().show();
 		} else {
-
-			CommandResult cr = ShellUtils
-					.execCommand("which killall", true, true, true);
+			CommandResult cr = ShellUtils.execCommand("which killall", true, true, true);
 			if (cr.result != 0) {
 				YesOrNoDialog.Builder builder = new YesOrNoDialog.Builder(this);
-				builder.setTitle(getString(R.string.system_alter))
-						.setMessage(R.string.check_busybox_tip)
-						.setNegativeButton(
-								R.string.download,
-								new DialogInterface.OnClickListener() {
+				builder.setTitle(getString(R.string.system_alter)).setMessage(R.string.check_busybox_tip)
+						.setNegativeButton(R.string.download, new DialogInterface.OnClickListener() {
 
-									@Override
-									public void onClick(
-											DialogInterface dialog,
-											int which) {
-										dialog.dismiss();
-										if (checkAssistant("busybox")) {
-											Intent intent = new Intent(
-													Intent.ACTION_VIEW);
-											ComponentName cn = new ComponentName(
-													"com.qihoo.appstore",
-													"com.qihoo.appstore.activities.SearchDistributionActivity");
-											intent.setComponent(cn);
-											intent.setData(Uri
-													.parse("market://details?id=stericson.busybox.donate"));
-											startActivity(intent);
-										}
-									}
-								})
-						.setPositiveButton(
-								R.string.exit,
-								new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
+								Intent intent = new Intent(MainActivity.this, BrowserActivity.class);
+								intent.putExtra("view_type", BrowserActivity.BROWSER_COMMON);
+								intent.putExtra("url", "http://www.busybox.net/");
+								startActivity(intent);
+							}
+						}).setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
 
-									@Override
-									public void onClick(
-											DialogInterface dialog,
-											int which) {
-										dialog.dismiss();
-										exit();
-									}
-								}).create().show();
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
+								exit();
+							}
+						}).create().show();
 			}
-		}
-	}
-
-	private boolean checkAssistant(String name) {
-		try {
-			getPackageManager().getApplicationInfo("com.qihoo.appstore",
-					PackageManager.GET_UNINSTALLED_PACKAGES);
-			return true;
-		} catch (NameNotFoundException e) {
-			YesOrNoDialog.Builder builder = new YesOrNoDialog.Builder(this);
-			builder.setTitle(getString(R.string.system_alter))
-					.setMessage(String.format(
-							getString(R.string.check_360_assistant),
-							name))
-					.setNegativeButton(R.string.yes,
-							new DialogInterface.OnClickListener() {
-
-								@Override
-								public void onClick(
-										DialogInterface dialog,
-										int which) {
-									dialog.dismiss();
-									Intent intent = new Intent();
-									intent.setAction("android.intent.action.VIEW");
-									Uri content_url = Uri
-											.parse("http://sj.360.cn");
-									intent.setData(content_url);
-									startActivity(intent);
-								}
-							})
-					.setPositiveButton(R.string.no,
-							new DialogInterface.OnClickListener() {
-
-								@Override
-								public void onClick(
-										DialogInterface dialog,
-										int which) {
-									dialog.dismiss();
-									exit();
-								}
-							}).create().show();
-			return false;
 		}
 	}
 
@@ -229,88 +146,54 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		case R.id.main_lan_scan_btn:
 			if (!NetworkUtils.isWifiConnected()) {
 				YesOrNoDialog.Builder builder = new YesOrNoDialog.Builder(this);
-				builder.setTitle(getString(R.string.system_alter))
-						.setMessage(R.string.wifi_connect_tip)
-						.setNegativeButton(
-								R.string.return_tip,
-								new DialogInterface.OnClickListener() {
+				builder.setTitle(getString(R.string.system_alter)).setMessage(R.string.wifi_connect_tip)
+						.setNegativeButton(R.string.return_tip, new DialogInterface.OnClickListener() {
 
-									@Override
-									public void onClick(
-											DialogInterface dialog,
-											int which) {
-										dialog.dismiss();
-									}
-								})
-						.setPositiveButton(
-								R.string.setting,
-								new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
+							}
+						}).setPositiveButton(R.string.setting, new DialogInterface.OnClickListener() {
 
-									@Override
-									public void onClick(
-											DialogInterface dialog,
-											int which) {
-										dialog.dismiss();
-										Intent intent = new Intent();
-										intent.setAction("android.net.wifi.PICK_WIFI_NETWORK");
-										intent.putExtra("extra_prefs_show_button_bar",
-												true);
-										intent.putExtra("wifi_enable_next_on_connect",
-												true);
-										startActivity(intent);
-									}
-								}).create().show();
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
+								Intent intent = new Intent();
+								intent.setAction("android.net.wifi.PICK_WIFI_NETWORK");
+								intent.putExtra("extra_prefs_show_button_bar", true);
+								intent.putExtra("wifi_enable_next_on_connect", true);
+								startActivity(intent);
+							}
+						}).create().show();
 			} else {
 				startActivity(new Intent(this, HostsActivity.class));
-				overridePendingTransition(R.anim.z_slide_in_bottom,
-						R.anim.z_slide_out_top);
+				overridePendingTransition(R.anim.z_slide_in_bottom, R.anim.z_slide_out_top);
 			}
 			break;
 		case R.id.main_arp_cheat_way_btn:
 			RadioDialog.Builder builder = new RadioDialog.Builder(MainActivity.this);
-			builder.setTitle(R.string.choose_way)
-					.setRadio1(R.string.one_way_host,
-							ArpService.ONE_WAY_HOST == arp_cheat_way,
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(
-										DialogInterface dialog,
-										int which) {
-									arp_cheat_way = ArpService.ONE_WAY_HOST;
-									AppContext.putInt(
-											"arp_cheat_way",
-											arp_cheat_way);
-									dialog.dismiss();
-								}
-							})
-					.setRadio2(R.string.one_way_router,
-							ArpService.ONE_WAY_ROUTE == arp_cheat_way,
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(
-										DialogInterface dialog,
-										int which) {
-									arp_cheat_way = ArpService.ONE_WAY_ROUTE;
-									AppContext.putInt(
-											"arp_cheat_way",
-											arp_cheat_way);
-									dialog.dismiss();
-								}
-							})
-					.setRadio3(R.string.two_way,
-							ArpService.TWO_WAY == arp_cheat_way,
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(
-										DialogInterface dialog,
-										int which) {
-									arp_cheat_way = ArpService.TWO_WAY;
-									AppContext.putInt(
-											"arp_cheat_way",
-											arp_cheat_way);
-									dialog.dismiss();
-								}
-							}).create().show();
+			builder.setTitle(R.string.choose_way).setRadio1(R.string.one_way_host, ArpService.ONE_WAY_HOST == arp_cheat_way, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					arp_cheat_way = ArpService.ONE_WAY_HOST;
+					AppContext.putInt("arp_cheat_way", arp_cheat_way);
+					dialog.dismiss();
+				}
+			}).setRadio2(R.string.one_way_router, ArpService.ONE_WAY_ROUTE == arp_cheat_way, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					arp_cheat_way = ArpService.ONE_WAY_ROUTE;
+					AppContext.putInt("arp_cheat_way", arp_cheat_way);
+					dialog.dismiss();
+				}
+			}).setRadio3(R.string.two_way, ArpService.TWO_WAY == arp_cheat_way, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					arp_cheat_way = ArpService.TWO_WAY;
+					AppContext.putInt("arp_cheat_way", arp_cheat_way);
+					dialog.dismiss();
+				}
+			}).create().show();
 			break;
 		case R.id.actionbar_about:
 			startActivity(new Intent(this, AboutActivity.class));
