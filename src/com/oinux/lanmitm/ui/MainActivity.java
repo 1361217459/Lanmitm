@@ -95,13 +95,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		if (!ShellUtils.checkRootPermission()) {
 			YesOrNoDialog.Builder builder = new YesOrNoDialog.Builder(this);
 			builder.setTitle(getString(R.string.system_alter)).setMessage(R.string.check_root_tips)
-					.setNegativeButton(R.string.download, new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-						}
-					}).setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
+					.setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
