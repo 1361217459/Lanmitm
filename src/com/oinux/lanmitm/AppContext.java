@@ -24,8 +24,7 @@ public class AppContext extends Application {
 	public static final String LICENSE = "<h5><font color='#009966'><b>Lanmitm</b> v0.9 alpha by oinux</h5><br/>";
 	private static Context mContext;
 	private static String[] TOOLS_FILENAME = { "arpspoof", "tcpdump" };
-	private static String[] TOOLS_COMMAND = { "chmod 755 [ROOT_PATH]/arpspoof",
-			"chmod 755 [ROOT_PATH]/tcpdump" };
+	private static String[] TOOLS_COMMAND = { "chmod 755 [ROOT_PATH]/arpspoof", "chmod 755 [ROOT_PATH]/tcpdump" };
 	private static SharedPreferences preferences = null;
 
 	private static InetAddress mInetAddress;
@@ -68,22 +67,22 @@ public class AppContext extends Application {
 		super.onCreate();
 	}
 
-
 	public static void initWifiInfo() {
-		WifiManager wifiManager = (WifiManager) mContext
-				.getSystemService(Context.WIFI_SERVICE);
+		WifiManager wifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
 		int_ip = wifiManager.getDhcpInfo().ipAddress;
 		int_net_mask = wifiManager.getDhcpInfo().netmask;
+		/**获取不到子网掩码，nexus5实测，偶尔拿不到**/
+		if (int_net_mask == 0) {
+			int_net_mask = (0 << 24) + (0xff << 16) + (0xff << 8) + 0xff ;
+		}
 		int_gateway = wifiManager.getDhcpInfo().gateway;
 		try {
-			mInetAddress = InetAddress.getByName(NetworkUtils
-					.netfromInt(int_ip));
+			mInetAddress = InetAddress.getByName(NetworkUtils.netfromInt(int_ip));
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 
-		gatewayMac = wifiManager.getConnectionInfo().getBSSID()
-				.replace('-', ':');
+		gatewayMac = wifiManager.getConnectionInfo().getBSSID().replace('-', ':');
 	}
 
 	public static StringBuilder getServerLog() {
@@ -160,8 +159,7 @@ public class AppContext extends Application {
 
 		try {
 			for (String filename : TOOLS_FILENAME) {
-				fos = new FileOutputStream(getFilesDir().getAbsolutePath()
-						+ '/' + filename);
+				fos = new FileOutputStream(getFilesDir().getAbsolutePath() + '/' + filename);
 				is = this.getAssets().open(filename);
 				while ((len = is.read(buffer)) != -1) {
 					fos.write(buffer, 0, len);
@@ -171,8 +169,7 @@ public class AppContext extends Application {
 			}
 
 			for (String cmd : TOOLS_COMMAND) {
-				ShellUtils.execCommand(cmd.replace("[ROOT_PATH]", getFilesDir()
-						.getAbsolutePath()), true, true);
+				ShellUtils.execCommand(cmd.replace("[ROOT_PATH]", getFilesDir().getAbsolutePath()), true, true);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

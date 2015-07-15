@@ -48,16 +48,11 @@ import com.oinux.lanmitm.util.NetworkUtils;
  */
 public class HostsActivity extends ActionBarActivity {
 
-	private static final byte[] NETBIOS_REQUEST = { (byte) 0x82, (byte) 0x28, (byte) 0x0,
-			(byte) 0x0, (byte) 0x0, (byte) 0x1, (byte) 0x0, (byte) 0x0, (byte) 0x0,
-			(byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x20, (byte) 0x43, (byte) 0x4B,
-			(byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41,
-			(byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41,
-			(byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41,
-			(byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41,
-			(byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41,
-			(byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41,
-			(byte) 0x0, (byte) 0x0, (byte) 0x21, (byte) 0x0, (byte) 0x1 };
+	private static final byte[] NETBIOS_REQUEST = { (byte) 0x82, (byte) 0x28, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x1, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0,
+			(byte) 0x0, (byte) 0x0, (byte) 0x20, (byte) 0x43, (byte) 0x4B, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41,
+			(byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41,
+			(byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x0,
+			(byte) 0x0, (byte) 0x21, (byte) 0x0, (byte) 0x1 };
 
 	private static final short NETBIOS_UDP_PORT = 137;
 	private static final Pattern ARP_TABLE_PARSER = Pattern
@@ -75,6 +70,7 @@ public class HostsActivity extends ActionBarActivity {
 	private ListView hostListview;
 	private HostAdapter hostAdapter;
 	private List<LanHost> mHosts;
+	private List<LanHost> mCheckHosts;
 	private Handler mHandler = new HostsHandler(this);
 
 	private TextView headerText;
@@ -92,9 +88,7 @@ public class HostsActivity extends ActionBarActivity {
 				if (msg.what == DATASET_CHANGED) {
 					activity.mHosts.add((LanHost) msg.obj);
 					activity.hostAdapter.notifyDataSetChanged();
-					activity.headerText.setText(String.format(activity
-							.getString(R.string.found_lan_hosts),
-							activity.mHosts.size()));
+					activity.headerText.setText(String.format(activity.getString(R.string.found_lan_hosts), activity.mHosts.size()));
 				} else if (msg.what == DATASET_HOST_ALIAS_CHANGED) {
 					int i = msg.arg1;
 					LanHost host = activity.mHosts.get(i);
@@ -114,6 +108,8 @@ public class HostsActivity extends ActionBarActivity {
 		actionProgress = (ProgressBar) findViewById(R.id.header_progress);
 		actionProgress.setVisibility(View.VISIBLE);
 
+		mCheckHosts = new ArrayList<LanHost>();
+
 		mHosts = new ArrayList<LanHost>();
 		hostListview = (ListView) findViewById(R.id.host_listview);
 		hostAdapter = new HostAdapter(this, mHosts);
@@ -123,8 +119,7 @@ public class HostsActivity extends ActionBarActivity {
 			return;
 
 		try {
-			networkInterface = NetworkInterface.getByInetAddress(AppContext
-					.getInetAddress());
+			networkInterface = NetworkInterface.getByInetAddress(AppContext.getInetAddress());
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
@@ -132,8 +127,7 @@ public class HostsActivity extends ActionBarActivity {
 		hostListview.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				LanHost host = (LanHost) parent.getItemAtPosition(position);
 				AppContext.setTarget(host);
 				startActivity(new Intent(HostsActivity.this, MitmSelect.class));
@@ -145,15 +139,11 @@ public class HostsActivity extends ActionBarActivity {
 		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 
 		mHosts.clear();
-		LanHost gateWay = new LanHost(AppContext.getGatewayMac(), AppContext.getGateway(),
-				NetworkUtils.vendorFromMac(NetworkUtils.stringMacToByte(AppContext
-						.getGatewayMac())), wifiInfo.getSSID().replace(
-						"\"", ""));
+		LanHost gateWay = new LanHost(AppContext.getGatewayMac(), AppContext.getGateway(), NetworkUtils.vendorFromMac(NetworkUtils.stringMacToByte(AppContext
+				.getGatewayMac())), wifiInfo.getSSID().replace("\"", ""));
 		mHosts.add(gateWay);
-		LanHost myself = new LanHost(wifiManager.getConnectionInfo().getMacAddress(),
-				AppContext.getIp(), NetworkUtils.vendorFromMac(NetworkUtils
-						.stringMacToByte(wifiInfo.getMacAddress())),
-				android.os.Build.MODEL);
+		LanHost myself = new LanHost(wifiManager.getConnectionInfo().getMacAddress(), AppContext.getIp(), NetworkUtils.vendorFromMac(NetworkUtils.stringMacToByte(wifiInfo
+				.getMacAddress())), android.os.Build.MODEL);
 		mHosts.add(myself);
 	}
 
@@ -189,10 +179,8 @@ public class HostsActivity extends ActionBarActivity {
 			String name;
 			try {
 				InetAddress inetAddress = InetAddress.getByName(target_ip);
-				DatagramPacket packet = new DatagramPacket(buffer, buffer.length,
-						inetAddress, NETBIOS_UDP_PORT), query = new DatagramPacket(
-						NETBIOS_REQUEST, NETBIOS_REQUEST.length,
-						inetAddress, NETBIOS_UDP_PORT);
+				DatagramPacket packet = new DatagramPacket(buffer, buffer.length, inetAddress, NETBIOS_UDP_PORT), query = new DatagramPacket(NETBIOS_REQUEST,
+						NETBIOS_REQUEST.length, inetAddress, NETBIOS_UDP_PORT);
 				socket = new DatagramSocket();
 				socket.setSoTimeout(200);
 
@@ -208,10 +196,7 @@ public class HostsActivity extends ActionBarActivity {
 						for (int k = 0; k < mHosts.size(); k++) {
 							LanHost h = mHosts.get(k);
 							if (h.getIp().equals(target_ip)) {
-								mHandler.obtainMessage(
-										DATASET_HOST_ALIAS_CHANGED,
-										k, 0, name)
-										.sendToTarget();
+								mHandler.obtainMessage(DATASET_HOST_ALIAS_CHANGED, k, 0, name).sendToTarget();
 								break;
 							}
 						}
@@ -249,13 +234,11 @@ public class HostsActivity extends ActionBarActivity {
 			int next_int_ip = 0;
 			try {
 				while (!stop) {
-					next_int_ip = AppContext.getIntNetMask()
-							& AppContext.getIntGateway();
+					next_int_ip = AppContext.getIntNetMask() & AppContext.getIntGateway();
 					for (int i = 0; i < AppContext.getHostCount() && !stop; i++) {
 						next_int_ip = NetworkUtils.nextIntIp(next_int_ip);
 						if (next_int_ip != -1) {
-							String ip = NetworkUtils
-									.netfromInt(next_int_ip);
+							String ip = NetworkUtils.netfromInt(next_int_ip);
 							try {
 								executor.execute(new UDPThread(ip));
 							} catch (RejectedExecutionException e) {
@@ -312,46 +295,28 @@ public class HostsActivity extends ActionBarActivity {
 						line = sb.toString();
 						sb.setLength(0);
 
-						if ((matcher = ARP_TABLE_PARSER.matcher(line)) != null
-								&& matcher.find()) {
-							String address = matcher.group(1), flags = matcher
-									.group(3), hwaddr = matcher
-									.group(4), device = matcher
-									.group(6);
-							if (device.equals(networkInterface
-									.getDisplayName())
-									&& !hwaddr.equals("00:00:00:00:00:00")
-									&& flags.contains("2")) {
-								// Log.v("mac",
-								// address +
-								// ">>" +
-								// hwaddr);
-								boolean contains = false;
+						if ((matcher = ARP_TABLE_PARSER.matcher(line)) != null && matcher.find()) {
+							String address = matcher.group(1), flags = matcher.group(3), hwaddr = matcher.group(4), device = matcher.group(6);
+							if (device.equals(networkInterface.getDisplayName()) && !hwaddr.equals("00:00:00:00:00:00") && flags.contains("2")) {
 
-								for (LanHost h : mHosts) {
-									if (h.getMac().equals(
-											hwaddr)
-											|| h.getIp()
-													.equals(address)) {
-										contains = true;
-										break;
+								synchronized (HostsActivity.class) {
+
+									boolean contains = false;
+
+									for (LanHost h : mCheckHosts) {
+										if (h.getMac().equals(hwaddr) || h.getIp().equals(address)) {
+											contains = true;
+											break;
+										}
 									}
-								}
-								if (!contains) {
-									byte[] mac_bytes = NetworkUtils
-											.stringMacToByte(hwaddr);
-									String vendor = NetworkUtils
-											.vendorFromMac(mac_bytes);
-									LanHost host = new LanHost(
-											hwaddr,
-											address,
-											vendor);
-									mHandler.obtainMessage(
-											DATASET_CHANGED,
-											host)
-											.sendToTarget();
-									executor.execute(new RecvThread(
-											address));
+									if (!contains) {
+										byte[] mac_bytes = NetworkUtils.stringMacToByte(hwaddr);
+										String vendor = NetworkUtils.vendorFromMac(mac_bytes);
+										LanHost host = new LanHost(hwaddr, address, vendor);
+										mCheckHosts.add(host);
+										mHandler.obtainMessage(DATASET_CHANGED, host).sendToTarget();
+										executor.execute(new RecvThread(address));
+									}
 								}
 							}
 						}
@@ -394,8 +359,7 @@ public class HostsActivity extends ActionBarActivity {
 				socket = new DatagramSocket();
 				// Log.d(TAG, target_ip);
 				InetAddress address = InetAddress.getByName(target_ip);
-				DatagramPacket packet = new DatagramPacket(NETBIOS_REQUEST,
-						NETBIOS_REQUEST.length, address, NETBIOS_UDP_PORT);
+				DatagramPacket packet = new DatagramPacket(NETBIOS_REQUEST, NETBIOS_REQUEST.length, address, NETBIOS_UDP_PORT);
 				socket.setSoTimeout(200);
 				socket.send(packet);
 				socket.close();
