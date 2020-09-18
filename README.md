@@ -1,9 +1,5 @@
-推荐一个无广告，完全自定义，带搜索提示的个性导航， <https://yez.space>
-
 Lanmitm — Android中间人攻击测试工具
 =============
-
-#####详细介绍：<http://www.oinux.com>
 
 #####下载说明：安装文件请直接进入download目录下载，开发版请自行导入eclipse中运行
 
